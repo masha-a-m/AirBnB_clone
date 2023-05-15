@@ -1,8 +1,9 @@
-#!/usr/bin/python3
+.#!/usr/bin/python3
 '''Module file_storage serializes and deserialize JSON types.'''
 
 import json
 from models.base_model import BaseModel
+#from models.user import User
 
 
 class FileStorage:
@@ -22,7 +23,6 @@ class FileStorage:
             object(obj): object to write.
         '''
         self.__object[object.__class__.__name__ + "." + object.id] = object
-
     def save(self):
         '''sets in __objects the object with key <object class name>.id'''
         with open(self.__file_path, 'w+') as f:

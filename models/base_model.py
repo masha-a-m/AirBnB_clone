@@ -1,63 +1,63 @@
 #!/usr/bin/python3
-"""
-Custom base class for the entire project.
-"""
 
-from uuid import uuid4
-from datetime import datetime
-from models import storage
+from datetime import datetime  # Importing the datetime module
+from uuid import uuid4  # Importing the uuid4 function from the uuid module
 
 
 class BaseModel:
     """
-    Custom base for all the classes in the Airbnb console project.
-    Arttributes:
-        id(str): handles unique user IDs.
-        created_at: assign current time of creation.
-        updated_at: assign current time of update.
-    Method:
-        __str__: prints class name, id and an dict presentation
-        of all input values.
-        save(self): Updates instance attribute "updated_at"
-        to_dict(self): returns the dict presentation of an instance.
+    A base model class that provides common functionality for other models.
     """
+
     def __init__(self, *args, **kwargs):
         """
-        Initializing after creation.
-        Args:
-            *args(self): plane arguments (Note not to be used).
-            *Kwargs(self): Keys and value arguments.
+        Constructor method for BaseModel.
+
+        Initializes the object with provided attributes or generates default values.
         """
-
         if not kwargs:
-            self.id = str(uuid4)
-            self.created_at = self.update_at = datetime.now()
-            storage.save()
+            # If no keyword arguments are provided, generate default values
+            self.id = str(uuid4())  # Generate a unique identifier using uuid4()
+            self.created_at = self.updated_at = datetime.now()  # Set creation and update timestamps
         else:
-            for key, value in kwargs.items():
-                if key != "__class__":
-                    if key in ("update_at, created_at"):
-                        setattr(self, key, datetime.fromisoformat(value))
+            # If keyword arguments are provided, set the corresponding attributes
+            for k, v in kwargs.items():
+                if k != "__class__":
+                    if k in ("created_at", "updated_at"):
+                        # If the attribute is a timestamp, convert it from ISO format to datetime object
+                        setattr(self, k, datetime.fromisoformat(v))
                     else:
-                        setattr(self, key, value)
+                        # Set the attribute with the provided value
+                        setattr(self, k, v)
 
-    def __str__(self):
-        """Returns String representation of the class."""
-        return "[{}] ({}) {}".format(type(self).__name__, self.id,
-                                    self.__dict__)
+    def __str__(self) -> str:
+        """
+        Return a string representation of the object.
+
+        Returns:
+            str: A formatted string containing the class name, id, and attribute dictionary.
+        """
+        return "[{}] ({}) {}".format(__class__.__name__, self.id, self.__dict__)
 
     def save(self):
-        """Updates "updated_at" attribute."""
-        self.update_at = datetime.now()
-        storage.save()
+        """
+        Update the 'updated_at' attribute with the current timestamp.
+        """
+        self.updated_at = datetime.now()
 
     def to_dict(self):
-        """Method returns a dictionary containing the of
-        an class and all keys/value of __dict__ instance."""
-        objects = __dict__.copy()
-        objects["__class__"] = self.__class__.__name__
-        for key, value in objects:
-            if key in ("update_at", "created_at"):
-                v = self.__dict__[key].isoformat()
-                objects[key] = v
-        return objects
+        """
+        Convert the object to a dictionary representation.
+
+        Returns:
+            dict: A dictionary containing the object's attributes and class name.
+        """
+        obj = self.__dict__.copy()  # Create a copy of the attribute dictionary
+        obj["__class__"] = __class__.__name__  # Add the class name to the dictionary
+
+        for k, v in obj.items():
+            if k in ("created_at", "updated_at"):
+                # If the attribute is a timestamp, convert it to ISO format string
+                obj[k] = datetime.isoformat(v)
+
+        return obj
