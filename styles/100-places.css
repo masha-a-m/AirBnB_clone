@@ -1,0 +1,18 @@
+.places {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100;
+
+.places .name_and_price {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.places .amenities,
+.places .reviews {
+  margin-top: 40px;
+}
