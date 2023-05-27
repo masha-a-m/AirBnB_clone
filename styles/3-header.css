@@ -1,0 +1,31 @@
+header {
+  background-color: #FF0000;
+  height: 70px;
+  width: 100%;
+  border-bottom: 1px solid #CCCCCC;
+  display: flex;
+  align-items: center;
+}
+
+header .logo {
+  margin-right: 20px;
+}
+
+header .logo::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+
+header .logo::after {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 0;
+  padding-top: 60%;
+}
+
+header .logo {
+  background-size: contain;
+}
